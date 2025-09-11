@@ -4,19 +4,30 @@ import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 function Header() {
-  const authStatus = useSelector((state) => state.auth.status);
+  const authStatus = useSelector((state) => state.auth.status); // null | true | false
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navItems = [
-    { name: 'Home', slug: '/' , show: true },
-    { name: 'Login', slug: '/login', show: !authStatus },
-    { name: 'Signup', slug: '/signup', show: !authStatus },
-    { name: 'All Posts', slug: '/all-posts', show: authStatus },
-    { name: 'Add Post', slug: '/add-post', show: authStatus },
+    { name: 'Home', slug: '/', show: true },
+    { name: 'Login', slug: '/login', show: authStatus === false },
+    { name: 'Signup', slug: '/signup', show: authStatus === false },
+    { name: 'All Posts', slug: '/all-posts', show: authStatus === true },
+    { name: 'Add Post', slug: '/add-post', show: authStatus === true },
   ];
 
   const activeNavItems = navItems.filter(item => item.show);
+
+  // Optional: Show loading spinner if authStatus is null
+  if (authStatus === null) {
+    return (
+      <header className="bg-gray-900 py-4 text-center text-white shadow-md sticky top-0 z-50">
+        <Container>
+          <p>Loading...</p>
+        </Container>
+      </header>
+    );
+  }
 
   return (
     <header className="bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900 text-white shadow-md sticky top-0 z-50">
@@ -42,7 +53,8 @@ function Header() {
               </li>
             ))}
 
-            {authStatus && (
+            {/* Show logout only when logged in and authStatus is confirmed */}
+            {authStatus === true && (
               <li>
                 <LogoutBtn />
               </li>
@@ -89,7 +101,7 @@ function Header() {
                 </li>
               ))}
 
-              {authStatus && (
+              {authStatus === true && (
                 <li>
                   <LogoutBtn />
                 </li>
