@@ -32,9 +32,6 @@ function App() {
 
  return (
   <div className="min-h-screen flex flex-col bg-gray-900 text-white">
-    <div className="bg-red-600 text-white text-center py-3 px-4 font-semibold shadow-md">
-      ⚠️ There is an issue with auto logout. Please make sure to log out manually.
-    </div>
     <Header />
     <main className="flex-grow container mx-auto px-4 py-3">
       <Outlet />
